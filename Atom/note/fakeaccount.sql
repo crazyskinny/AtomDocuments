@@ -1,5 +1,5 @@
--- auto-generated definition
-create table fakeaccount
+ -- auto-generated definition
+create table fake_account
 (
     id                   bigint auto_increment comment '主键'    primary key,
     account              varchar(64)                            not null comment 'mt4登录账号',
@@ -11,8 +11,8 @@ create table fakeaccount
 );
 
 
-create index fakeaccount_broker_id_account_index
-    on fakeaccount (broker_id, account);
+create index fake_account_broker_id_account_index
+    on fake_account (broker_id, account);
 
-create index fakeaccount_user_id
-        on fakeaccount (user_id);
+create index fake_account_user_id
+        on fake_account (user_id);
