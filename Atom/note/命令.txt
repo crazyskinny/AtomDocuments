@@ -1,0 +1,56 @@
+1,调试的命令:go run main.go --registry=consul --registry_address=10.1.0.4:8500 --server grpc --server_address :0
+2,生成微服务骨干代码：micro new microtest --type=srv --alias=microtest --namespace=io.github.entere --gopath=false
+
+
+3,查看import中的所有init()
+GODEBUG=inittrace=1 ./main
+
+4,protoc命令详细描述
+protoc --go_out=转换输出为go文件的目录 --micro_out=转换输出为micro微服务文件的目录 原始proto文件所在位置
+example：protoc --go_out=goprotobuf/build --micro_out=goprotobuf/build goprotobuf/proto/account.proto
+在microtest.proto中指定文件生成的位置
+protoc --proto_path=. --micro_out=. --go_out=. ./dashboardv2.proto
+
+5 将protoc 文件中的v3引入改为
+	api "github.com/micro/go-micro/v2/api"
+	client "github.com/micro/go-micro/v2/client"
+	server "github.com/micro/go-micro/v2/server"
+
+6 查看服务list
+grpcurl -plaintext 192.168.8.6:8500 list
+
+7调试地址
+内网:192.168.8.6:8500
+beta地址:10.1.0.4:8500
+
+环境变量：
+
+查询端口占用netstat -ano |findstr ""
+
+xorm生成struct命令
+xorm reverse mysql copytrade:Czj5#xqVND@$"@"tcp(10.1.0.7:3326)"/copytrading?charset=utf8 templates/goxorm
+xorm reverse mysql root:@/xorm_test?charset=utf8 templates/goxorm
+
+
+
+数据库配置信息
+beta:
+{
+	"sam_dburl": "fmbetadb002:31Bawd0c5GEq@tcp(10.1.0.7:3326)/sam?charset=utf8",
+	"sam_dbpurl": "user=bg_dev password=WhHl_2020#_ host=10.1.0.7 port=5432 dbname=postgres search_path=sam",
+	"copytrade_dburl": "copytrade:Czj5#xqVND@tcp(10.1.0.7:3326)/copytrading?charset=utf8&clientFoundRows=true",
+	"mt4cli_dbpurl": "user=bg_dev password=WhHl_2020#_ host=10.1.0.7 port=5432 dbname=postgres search_path=monitor",
+	"alert_token": "92b68895798f8bcac0acc58ce9c416e681db0b827091622908146ff23b265d1e"
+}
+dev:
+        "DatasDBURL": {
+            "dburl": "root:my-secret-pw@tcp(192.168.8.34:3326)/datastatistic?charset=utf8&clientFoundRows=true",
+            "poolsize": 20
+        },
+
+
+不解压文件查看文件列表
+tar tvf  test.tar.gz
+
+10.1.0.28:40081
+10.11.57.134:41497
