@@ -1,0 +1,39 @@
+{
+  "etcd_host": "",
+  "mysql_account": {
+    "driver": " ",
+    "url": " ",
+    "pool_size": ""
+  },
+  "mysql_copytrading": {
+    "driver": " ",
+    "url": " ",
+    "pool_size": ""
+  },
+  "mysql_datastatistic": {
+    "driver": " ",
+    "url": " ",
+    "pool_size": ""
+  },
+  "mysql_sam": {
+    "driver": " ",
+    "url": " ",
+    "pool_size": ""
+  },
+
+  "postgrepsql": {
+    "url": " "
+  },
+  "redis_copytrading": {
+    "host": "",
+    "password": ""
+  },
+  "redis_copytrading_new": {
+    "host": "",
+    "password": ""
+  },
+  "redis_user": {
+    "host": "",
+    "password": ""
+  }
+}
