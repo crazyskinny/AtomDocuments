@@ -13,7 +13,7 @@ create table sam.fake_account
 );
 
 create index fake_account_broker_id_account_index
-    on sam.fake_account (broker_id, account);
+    on sam.fake_account (account,broker_id);
 
 create index fake_account_user_id
     on sam.fake_account (user_id)

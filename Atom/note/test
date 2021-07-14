@@ -1,0 +1,148 @@
+Running with gitlab-runner 11.9.2 (fa86510e)
+  on hkpd-goci-shared Vz1D9-6N
+Using Docker executor with image dockerhub.followme-internal.com/library/golang-builder:alpine ...
+Pulling docker image dockerhub.followme-internal.com/library/golang-builder:alpine ...
+Using docker image sha256:d3bd646a003279dbc2a1c6f0a7f1c6c18fe979cbe7d39657fded93c281a68f7e for dockerhub.followme-internal.com/library/golang-builder:alpine ...
+Running on runner-Vz1D9-6N-project-3691-concurrent-0 via hkpd-goci...
+Reinitialized existing Git repository in /builds/CopyTradingGo/dashboard-v2-srv/.git/
+Removing bin/
+Removing tree
+Clean repository
+Fetching changes...
+fatal: remote origin already exists.
+From https://gitlab.followme-internal.com/CopyTradingGo/dashboard-v2-srv
+ + d13e548...dfaa6c7 feat_lzd   -> origin/feat_lzd  (forced update)
+Checking out dfaa6c77 as feat_lzd...
+
+Skipping Git submodules setup
+$ export CI_BUILDS_DIR=$(pwd)
+$ export CI_BUILD_INFO=$(echo "ci build at - $(date) commit id and branch/tag [$CI_BUILD_REF_NAME/$CI_COMMIT_SHORT_SHA]" )
+$ echo $CI_BUILD_INFO
+ci build at - Mon Jul 12 20:21:30 CST 2021 commit id and branch/tag [feat_lzd/dfaa6c77]
+$ export IMAGE_TAG=$(echo -en $CI_BUILD_REF_NAME | tr -c '[:alnum:]_.-' '-')
+$ export IMAGE_NAME=$(if [ -z ${CI_REGISTRY_IMAGE+x} ]; then echo dockerhub.followme-internal.com/copytrade/go-${CI_PROJECT_NAME%%-srv}-grpc-srv; else echo $CI_REGISTRY_IMAGE; fi)
+$ echo "project namespace - $CI_PROJECT_NAMESPACE"
+project namespace - CopyTradingGo
+$ if [ $CI_PROJECT_NAMESPACE != $PROJECT_GROUP ]; then export IMAGE_NAME=$IMAGE_NAME-$CI_PROJECT_NAMESPACE; fi
+$ echo "image name is - $IMAGE_NAME, $CI_REGISTRY_IMAGE, $CI_PROJECT_NAME, $IMAGE_TAG"
+image name is - dockerhub.followme-internal.com/copytrade/go-dashboard-v2-grpc-srv, , dashboard-v2-srv, feat_lzd
+$ go mod graph > $CI_BUILDS_DIR/tree
+$ make
+go build -i -v -ldflags "-X fmgo.io/go-common/env.Repository=dashboard-v2-srv -X fmgo.io/go-common/env.Branch=feat_lzd -X fmgo.io/go-common/env.Commit=dfaa6c77 -X fmgo.io/go-common/env.Version=v1.0.9" -o ./bin/dashboard-v2-srv *.go
+CopyTradingGo/dashboard-v2-srv/model
+CopyTradingGo/dashboard-v2-srv/service
+command-line-arguments
+$ docker build -t "$IMAGE_NAME:$IMAGE_TAG" --build-arg ARG_PROJECT_NAME=$CI_PROJECT_NAME --build-arg ARG_CI_BUILD_INFO="$CI_BUILD_INFO" .
+Sending build context to Docker daemon  91.27MB
+
+Step 1/9 : FROM dockerhub.followme-internal.com/library/golang-runtime:alpine
+ ---> 1716a868fa2b
+Step 2/9 : ARG ARG_CI_BUILD_INFO
+ ---> Using cache
+ ---> 3e9b77c5bef9
+Step 3/9 : ARG ARG_PROJECT_NAME
+ ---> Using cache
+ ---> 7c618f8a921c
+Step 4/9 : ENV PROJECT_NAME $ARG_PROJECT_NAME
+ ---> Using cache
+ ---> 6c8de24b17f6
+Step 5/9 : ENV SERVER_ADDR=:0
+ ---> Using cache
+ ---> ef314adc2f7f
+Step 6/9 : ENV CI_BUILD_INFO $ARG_CI_BUILD_INFO
+ ---> Running in 98de62839070
+Removing intermediate container 98de62839070
+ ---> 320cbb7fbb4a
+Step 7/9 : LABEL CI_BUILD_INFO=$ARG_CI_BUILD_INFO
+ ---> Running in 73639f2651d5
+Removing intermediate container 73639f2651d5
+ ---> bba1be3d5550
+Step 8/9 : COPY docker-entrypoint.sh /app/bin/
+ ---> 0f56986281fd
+Step 9/9 : ADD bin/${PROJECT_NAME} /app/bin/
+ ---> ed3f0f900ad3
+Successfully built ed3f0f900ad3
+Successfully tagged dockerhub.followme-internal.com/copytrade/go-dashboard-v2-grpc-srv:feat_lzd
+$ echo 'begin push images...'
+begin push images...
+$ docker push "$IMAGE_NAME:$IMAGE_TAG"
+The push refers to repository [dockerhub.followme-internal.com/copytrade/go-dashboard-v2-grpc-srv]
+2d3db0baea30: Preparing
+745f3d30b51b: Preparing
+a3df8617d3ac: Preparing
+935543490d2f: Preparing
+996de718103c: Preparing
+1a373f4acf68: Preparing
+1a373f4acf68: Preparing
+2c4ec7e2cd0a: Preparing
+ee42e8ae15ef: Preparing
+5acffb577241: Preparing
+27ed81c32f2e: Preparing
+3e207b409db3: Preparing
+2c4ec7e2cd0a: Waiting
+1a373f4acf68: Waiting
+ee42e8ae15ef: Waiting
+5acffb577241: Waiting
+3e207b409db3: Waiting
+27ed81c32f2e: Waiting
+a3df8617d3ac: Layer already exists
+996de718103c: Layer already exists
+935543490d2f: Layer already exists
+1a373f4acf68: Layer already exists
+ee42e8ae15ef: Layer already exists
+2c4ec7e2cd0a: Layer already exists
+5acffb577241: Layer already exists
+27ed81c32f2e: Layer already exists
+3e207b409db3: Layer already exists
+745f3d30b51b: Pushed
+2d3db0baea30: Pushed
+feat_lzd: digest: sha256:c9aa97019a86a25b68d504d1bb88a3c0a2c0c485e89c7a67f333164d00088496 size: 2826
+$ docker tag "$IMAGE_NAME:$IMAGE_TAG" "$IMAGE_NAME:latest"
+$ docker push "$IMAGE_NAME:latest"
+The push refers to repository [dockerhub.followme-internal.com/copytrade/go-dashboard-v2-grpc-srv]
+2d3db0baea30: Preparing
+745f3d30b51b: Preparing
+a3df8617d3ac: Preparing
+935543490d2f: Preparing
+996de718103c: Preparing
+1a373f4acf68: Preparing
+1a373f4acf68: Preparing
+2c4ec7e2cd0a: Preparing
+ee42e8ae15ef: Preparing
+5acffb577241: Preparing
+27ed81c32f2e: Preparing
+3e207b409db3: Preparing
+27ed81c32f2e: Waiting
+3e207b409db3: Waiting
+ee42e8ae15ef: Waiting
+5acffb577241: Waiting
+1a373f4acf68: Waiting
+2c4ec7e2cd0a: Waiting
+2d3db0baea30: Layer already exists
+935543490d2f: Layer already exists
+a3df8617d3ac: Layer already exists
+996de718103c: Layer already exists
+745f3d30b51b: Layer already exists
+1a373f4acf68: Layer already exists
+2c4ec7e2cd0a: Layer already exists
+ee42e8ae15ef: Layer already exists
+5acffb577241: Layer already exists
+27ed81c32f2e: Layer already exists
+3e207b409db3: Layer already exists
+latest: digest: sha256:c9aa97019a86a25b68d504d1bb88a3c0a2c0c485e89c7a67f333164d00088496 size: 2826
+$ if [ ${CI_COMMIT_TAG+x} ] && [ $CI_PROJECT_NAMESPACE == $PROJECT_GROUP ]; then export IMAGE_NAME_DEPLOY="dockerhub.followme-internal.com/deploy/go-${CI_PROJECT_NAME%%-srv}-grpc-srv"; docker tag "$IMAGE_NAME:$IMAGE_TAG" "$IMAGE_NAME_DEPLOY:$CI_COMMIT_TAG"; docker push "$IMAGE_NAME_DEPLOY:$CI_COMMIT_TAG"; fi
+$ docker image prune -f
+Deleted Images:
+untagged: dockerhub.followme-internal.com/copytrade/go-dashboard-v2-grpc-srv@sha256:64cdb7973870197d1626d10b28183f1c339402ef45e08c651301032275c6cc8b
+deleted: sha256:07acd3f776af2ef811ed756939e0f19de09da3ba35e9145f3870713a78f4b804
+deleted: sha256:4b95b3588fafaf3cc1b0ec35a32c768c1b0e2e954bf1af144605d58a873ffd5b
+deleted: sha256:031bf6a63ba89670b9b57953a0587b3a871cced99f7e723c84ebbd33b5cd8185
+deleted: sha256:d13d0206873aef369b9e4ab5e76de3ca5c22895e33e2b24e143a8f4d57d50633
+deleted: sha256:e6960e57fd0bc31e1b586fbc61f650129d09b5868dcf11d0f0f1eadffac498e3
+deleted: sha256:a9f79c134b0f3f82c0f4126c674649b14525f6548a028fe6eb5052495c2810c8
+
+Total reclaimed space: 66.84MB
+Uploading artifacts...
+tree: found 1 matching files
+Uploading artifacts to coordinator... ok            id=151078 responseStatus=201 Created token=JEaYRzKN
+Job succeeded
